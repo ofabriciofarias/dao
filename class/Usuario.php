@@ -67,6 +67,55 @@ class Usuario{
 		}
 	}
 
+	//Retonar uma lista de usuários
+	public function getList(){
+		$sql = new Sql();
+		//echo "Estou aqui";
+		return $sql->select("SELECT * FROM tb_usuario ORDER BY deslogin;");
+	}
+
+	//Busca Usuário pelo Nome utilizando um método static e sua aplicação no index.php
+	public static function buscaUsuarioPeloNome($login){
+		$sql = new Sql();
+
+		return $sql->select("SELECT * FROM tb_usuario WHERE deslogin = :LOGIN", array(
+			":LOGIN"=>$login));
+	}
+
+	//Busca Usuários com nomes parecidos
+	public static function buscaUsuarios($login){
+		$sql = new Sql();
+
+		return $sql->select("SELECT * FROM tb_usuario WHERE deslogin LIKE :BUSCA ORDER BY deslogin", array(
+			":BUSCA"=>"%" . $login . "%"
+		));
+	}
+
+	//Criando um método login
+	public function login($login, $senha){
+
+		$sql = new Sql();
+
+		$resultado = $sql->select("SELECT * FROM tb_usuario WHERE deslogin = :LOGIN AND dessenha = :SENHA", array(
+			":LOGIN"=>$login,
+			":SENHA"=>$senha
+		));
+
+		if(count($resultado) > 0){
+			$row = $resultado[0];
+
+			$this->setIdUsuario($row['idusuario']);
+			$this->setDesLogin($row['deslogin']);
+			$this->setDesSenha($row['dessenha']);
+			$this->setDtCadastro(new DateTime($row['dtcadastro']));
+
+		}else{
+			throw new Exception("Login e/ou senha inválido");
+			//echo "Usuário ou Senha Inválido<br>";
+		}
+
+	}
+
 	//__toString para usar o echo e mostrar as informações com o json
 	public function __toString(){
 		return json_encode(array(
