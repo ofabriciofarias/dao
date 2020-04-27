@@ -49,4 +49,37 @@ $novoUsuario->login("usuario01","12345");
 
 echo $novoUsuario;
 
+echo "<br><br><br><br><br>==============Inserção no Banco de Dados=======================<br><br>";
+
+$aluno = new Usuario();
+
+$aluno->setDeslogin("aluno");
+$aluno->setDesSenha("@luno");
+
+$aluno->insert();
+
+echo $aluno;
+
+echo "<br><br><br><br><br>==============Atualizar Informação no Banco de Dados=======================<br><br>";
+
+$atualizaUsuario = new Usuario();
+
+$atualizaUsuario->loadById(10);
+
+$atualizaUsuario->update("professor", "senhaprofessor");
+
+echo $atualizaUsuario;
+
+
+echo "<br><br><br><br><br>==============Apagar uma Informação no Banco de Dados=======================<br><br>";
+
+$apagar = new Usuario();
+
+$apagar->loadById(19);
+
+$apagar->delete();
+
+echo $apagar;
+
 ?>
+
